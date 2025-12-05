@@ -52,6 +52,7 @@ typedef int bool;
 #define PARAM_VERSION_FROM "start-version"
 #define PARAM_VERSION_TO "end-version"
 #define PARAM_EXTRA_DATA "extra-data"
+#define PARAM_LOCKED_MAC_ADDRESS "locked-mac-address"
 // license file extra entries
 #define LICENSE_SIGNATURE "sig"
 #define LICENSE_VERSION "lic_ver"

@@ -146,6 +146,29 @@ BOOST_AUTO_TEST_CASE(extend_license) {
 						"license extended");
 }
 
+BOOST_AUTO_TEST_CASE(mac_address_locked) {
+	const fs::path licFile = MyGlobalFixture::licenses_path / "myclient_node_locked.lic";
+	const string lic_location_str = licFile.string();
+	License license(&lic_location_str, MyGlobalFixture::project_path.string());
+	license.add_parameter(PARAM_EXPIRY_DATE, "1929-11-11");
+	license.add_parameter(PARAM_LOCKED_MAC_ADDRESS, "AA:BB:CC:DD:EE:FF");
+	license.write_license();
+	BOOST_REQUIRE_MESSAGE(fs::exists(licFile), "license has been created");
+	CSimpleIniA ini;
+	ini.LoadFile(licFile.c_str());
+	BOOST_CHECK_MESSAGE(string(ini.GetValue("TEST_PROJECT", PARAM_EXPIRY_DATE)) == "1929-11-11", "Date was written");
+
+	License license_renew(&lic_location_str, MyGlobalFixture::project_path.string());
+	const string new_date("2020-05-01");
+	license_renew.add_parameter(PARAM_EXPIRY_DATE, new_date.c_str());
+	license_renew.write_license();
+	ini.Reset();
+	ini.LoadFile(licFile.c_str());
+	BOOST_CHECK_MESSAGE(ini.GetValue("TEST_PROJECT", PARAM_EXPIRY_DATE) == new_date, "license extended");
+	BOOST_CHECK_MESSAGE(ini.GetValue("TEST_PROJECT", PARAM_LOCKED_MAC_ADDRESS) == string("AA:BB:CC:DD:EE:FF"),
+						"license extended");
+}
+
 #else
 BOOST_AUTO_TEST_CASE(mock) { BOOST_CHECKPOINT("Mock test for older boost versions"); }
 #endif

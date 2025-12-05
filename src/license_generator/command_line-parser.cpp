@@ -135,6 +135,8 @@ static void issueLicense(const po::parsed_options &parsed, po::variables_map &vm
 		(PARAM_CLIENT_SIGNATURE ",s", po::value<string>(),
 		 "The signature of the hardware that requires the license. It should be in the format XXXX-XXXX-XXXX."
 		 " If not specified the license won't be linked to a specific hardware (eg. demo license).")  //
+		(PARAM_LOCKED_MAC_ADDRESS ",a", po::value<string>(), "Specify the license-locked mac address. It should be in the format XX:XX:XX:XX:XX:XX"	//
+		 " If not specified the license won't be linked to a specific mac address.")  //
 		(PARAM_LICENSE_OUTPUT ",o", po::value<string>(&license_name),
 		 "License output file name. May contain / that will be interpreded as subfolders.")	 //
 		(PARAM_FEATURE_NAMES ",f", po::value<boost::optional<std::string>>(),
